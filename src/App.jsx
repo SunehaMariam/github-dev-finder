@@ -4,13 +4,18 @@ function App(){
  const [username, setUsername] = useState('');
 const [user, setUser] = useState(null);
 
-   function Users(){
-  if(!username) return;
+  function Users() {
+  if (!username) return;
+
   fetch(`https://api.github.com/users/${username}`)
-  .then(res=>res.json())
-  .then(data=>setUser(data.message?"error":data))
-  .catch(()=>setUser('error'))}
-  console.log(user)
+    .then(res => {
+      if (!res.ok) throw new Error("User not found");
+      return res.json();
+    })
+    .then(data => setUser(data))
+    .catch(() => setUser("error"));
+}
+
 
 
   return(
